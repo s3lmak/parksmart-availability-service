@@ -52,6 +52,10 @@ public class AvailabilityController {
     private int calculateAvailableSpots(Long parkingId, int totalCapacity) {
         int hour = LocalTime.now().getHour();
         double occupancyRate = getOccupancyRate(hour);
+
+        double parkingVariation = (parkingId % 5) * 0.05;
+        occupancyRate = Math.min(0.95, occupancyRate + parkingVariation - 0.10);
+
         int baseAvailable = (int) (totalCapacity * (1 - occupancyRate));
         int randomVariation = random.nextInt(11) - 5;
         return Math.max(0, Math.min(totalCapacity, baseAvailable + randomVariation));
