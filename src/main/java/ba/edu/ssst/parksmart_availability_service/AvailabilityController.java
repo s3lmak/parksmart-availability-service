@@ -53,11 +53,12 @@ public class AvailabilityController {
         int hour = LocalTime.now().getHour();
         double occupancyRate = getOccupancyRate(hour);
 
-        double parkingVariation = (parkingId % 5) * 0.05;
-        occupancyRate = Math.min(0.95, occupancyRate + parkingVariation - 0.10);
+        // Svaki parking ima drugačiji rate baziran na ID-u
+        double parkingVariation = (parkingId % 7) * 0.08 - 0.24;
+        occupancyRate = Math.min(0.98, Math.max(0.05, occupancyRate + parkingVariation));
 
         int baseAvailable = (int) (totalCapacity * (1 - occupancyRate));
-        int randomVariation = random.nextInt(11) - 5;
+        int randomVariation = random.nextInt(21) - 10;
         return Math.max(0, Math.min(totalCapacity, baseAvailable + randomVariation));
     }
 
